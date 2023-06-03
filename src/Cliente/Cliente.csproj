@@ -7,6 +7,11 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <PlatformTarget>x64</PlatformTarget>
+    <AssemblyVersion></AssemblyVersion>
+    <Version>1.1.0</Version>
+    <Title>Demonstração de Quantum Computing</Title>
+    <Company>Luciano Condé de Souza</Company>
+    <Copyright>Luciano Condé de Souza</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

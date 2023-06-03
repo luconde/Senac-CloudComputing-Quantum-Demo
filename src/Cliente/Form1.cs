@@ -6,9 +6,13 @@ namespace Cliente
 {
     public partial class frmPrincipal : Form
     {
+
+        private ListViewColumnSorter pobjColumnSorter;
         public frmPrincipal()
         {
             InitializeComponent();
+            pobjColumnSorter = new ListViewColumnSorter();
+            lstView.ListViewItemSorter = pobjColumnSorter;
         }
 
         private async void cmdExecute_Click(object sender, EventArgs e)
@@ -19,7 +23,7 @@ namespace Cliente
             int intValue = 0;
 
             //limpa qualquer alteração anterior
-            lstOutput.Items.Clear();
+            lstView.Items.Clear();
             lblStatus.Text = "Status: Iniciando...";
             #endregion
 
@@ -68,11 +72,41 @@ namespace Cliente
             lblStatus.Text = "Status: Imprindo a lista...";
             foreach (var objItem in aintResult)
             {
-                lstOutput.Items.Add(string.Format("{0} ocorre {1} vezes", objItem.Key, objItem.Count()));
+                Debug.Print(string.Format("{0} ocorre {1} vezes", objItem.Key, objItem.Count()));
+                var item = new ListViewItem();
+                item.Text = objItem.Key.ToString();
+                item.SubItems.Add(objItem.Count().ToString());
+                lstView.Items.Add(item);
             }
             #endregion 
 
             lblStatus.Text = "Status: Concluido.";
+        }
+
+        private void lstView_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            // Determine if clicked column is already the column that is being sorted.
+            if (e.Column == pobjColumnSorter.SortColumn)
+            {
+                // Reverse the current sort direction for this column.
+                if (pobjColumnSorter.Order == SortOrder.Ascending)
+                {
+                    pobjColumnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    pobjColumnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                // Set the column number that is to be sorted; default to ascending.
+                pobjColumnSorter.SortColumn = e.Column;
+                pobjColumnSorter.Order = SortOrder.Ascending;
+            }
+
+            // Perform the sort with these new sort options.
+            this.lstView.Sort();
         }
     }
 }
